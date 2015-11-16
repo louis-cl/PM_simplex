@@ -29,7 +29,18 @@ class Simplex:
         # Get cost vector (c), constrictions coefs (A), independent term (b)
         self.c, self.A, self.b = [np.loadtxt(A, dtype=np.int) for A in generateChunks(filename, 3)]
         self.verbose = verbose
+        self.solved = False # mark as unsolved
         self.log("SIMPLEX: Have read c,A,b from %s" % filename)
+
+    def _phaseI(self):
+        self.log("SIMPLEX: Phase I started")
+        self.log("Phase I: make b >= 0", 1)
+        for i in range(len(self.b)):
+            if self.b[i] < 0:
+                self.A[i,:] *= -1
+                self.b[i] *= -1
+    def solve(self):
+        B = self._phaseI()
 
     def display(self):
         print("VECTOR C:")
@@ -38,8 +49,8 @@ class Simplex:
         print(self.A)
         print("VECTOR B:")
         print(self.b)
-    def log(self, msg):
-        if self.verbose: print(msg)
+    def log(self, msg, indent=0):
+        if self.verbose: print('\t'*indent + msg)
 
 def main(argv):
     if len(argv) < 2:
@@ -49,5 +60,6 @@ def main(argv):
     for i in range(1,len(argv)) :
         print("------ Data input %d ------" % i)
         S = Simplex(argv[i], verbose=True)
+        S.solve();
 
 main(sys.argv)
