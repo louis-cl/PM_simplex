@@ -21,8 +21,16 @@ def generateChunks(fname, limit):
         yield chunk
 
 class Simplex:
-    def __init__(self, filename):
+    # Solves PL problem:
+    #   min c'x
+    #   s.t | Ax = b
+    #       | x >= 0
+    def __init__(self, filename, verbose=False):
+        # Get cost vector (c), constrictions coefs (A), independent term (b)
         self.c, self.A, self.b = [np.loadtxt(A, dtype=np.int) for A in generateChunks(filename, 3)]
+        self.verbose = verbose
+        self.log("SIMPLEX: Have read c,A,b from %s" % filename)
+
     def display(self):
         print("VECTOR C:")
         print(self.c)
@@ -30,6 +38,8 @@ class Simplex:
         print(self.A)
         print("VECTOR B:")
         print(self.b)
+    def log(self, msg):
+        if self.verbose: print(msg)
 
 def main(argv):
     if len(argv) < 2:
@@ -37,8 +47,7 @@ def main(argv):
         sys.exit(1)
     # We have at least one data
     for i in range(1,len(argv)) :
-        print("Data input %d" % i)
-        S = Simplex(argv[i])
-        S.display()
+        print("------ Data input %d ------" % i)
+        S = Simplex(argv[i], verbose=True)
 
 main(sys.argv)
