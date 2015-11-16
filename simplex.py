@@ -25,12 +25,21 @@ class Simplex:
     #   min c'x
     #   s.t | Ax = b
     #       | x >= 0
+
+    # Get cost vector (c), constrictions coefs (A), independent term (b)
     def __init__(self, filename, verbose=False):
-        # Get cost vector (c), constrictions coefs (A), independent term (b)
-        self.c, self.A, self.b = [np.loadtxt(A, dtype=np.int) for A in generateChunks(filename, 3)]
+        self.c, self.A, self.b = [np.loadtxt(A) for A in generateChunks(filename, 3)]
         self.verbose = verbose
+        self.M, self.N = self.A.shape # store # or original variables
         self.solved = False # mark as unsolved
         self.log("SIMPLEX: Have read c,A,b from %s" % filename)
+
+    # return leaving basic variable, or -1 if no negative reduced cost (optimal)
+    def _blandRule(self, c, Binv) :
+        pass
+    # apply simplex algorithm given a basis, its inverse, and a basic feasible solution
+    def _simplex(self, x, c, B, Binv):
+        pass
 
     def _phaseI(self):
         self.log("SIMPLEX: Phase I started")
@@ -39,6 +48,15 @@ class Simplex:
             if self.b[i] < 0:
                 self.A[i,:] *= -1
                 self.b[i] *= -1
+        self.log("Phase I: add auxiliary variables",1)
+        self.A = np.c_[self.A, np.eye(self.M)]
+        B = np.arange(self.N, self.N+self.M) # create starting Base with artificial variables
+        Binv = np.eye(len(B)) # inverse of identity is indentity
+        y = self.b # SBF is B
+        c = np.concatenate((np.zeros(self.N), np.ones(self.M)))
+        self.log("Phase I: starting primal simplex with Bland's rule",1)
+        self._simplex(y,c,B,Binv)
+
     def solve(self):
         B = self._phaseI()
 
