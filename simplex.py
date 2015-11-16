@@ -35,11 +35,19 @@ class Simplex:
         self.log("SIMPLEX: Have read c,A,b from %s" % filename)
 
     # return leaving basic variable, or -1 if no negative reduced cost (optimal)
-    def _blandRule(self, c, Binv) :
-        pass
+    def _blandRule(self, c, B, Binv) :
+        l = np.dot(c[B], Binv) # cB*Binv = lambda from dual
+        # generator to get reduced costs (computes on the fly)
+        r = ( (c[j] - np.inner(l,self.A[:,j]),j) for j in range(self.A.shape[1]) if j not in B)
+        # return (rj, j) in increasing order, blandRule -> pick first < 0
+        rj = next(r)
+        while rj != None and rj[0] >= 0 : rj = next(r,None) # return None at end
+        return -1 if rj == None else rj[1] # rj == None => rj >= 0 for all j => optimal
+
     # apply simplex algorithm given a basis, its inverse, and a basic feasible solution
     def _simplex(self, x, c, B, Binv):
-        pass
+        iteration = 1
+        q = self._blandRule(c, B, Binv) # get q, leaving BV
 
     def _phaseI(self):
         self.log("SIMPLEX: Phase I started")
