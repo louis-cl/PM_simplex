@@ -48,15 +48,26 @@ class Simplex:
     # apply simplex algorithm given a basis, its inverse, and a basic feasible solution
     def _simplex(self, x, c, B, Binv):
         iteration = 1
-        q = self._blandRule(c, B, Binv) # get q, entring BV
-        if q == -1 : return x, B # x is optimal with basis B
-        # compute directions d = -Binv*A[q], we can remove the -
-        u = np.dot(Binv, self.A[:,q])
-        # select B(p) leaving variable
-        theta = (INF,-1)
-        for i in range(len(u)):
-            if u[i] > 0 : theta = (min(theta[0], x[B[i]]/u[i]), i)
-        if theta[0] == INF: return INF # infinit direction, z = -infinite
+        while iteration < 3 :
+            q = self._blandRule(c, B, Binv) # get q, entring BV
+            if q == -1 : return x, B # x is optimal with basis B
+            # compute directions d = -Binv*A[q], we can remove the -
+            u = np.dot(Binv, self.A[:,q])
+            # select B(p) leaving variable
+            theta = INF
+            p = -1
+            for i in range(len(u)):
+                if u[i] > 0 :
+                    theta = min(theta, x[B[i]]/u[i])
+                    p = i
+            if theta == INF: return INF # infinit direction, z = -infinite
+            # change of basis indexes
+            # compute new feasible solution
+            x[B] -= theta*u
+            B[p] = q  # replace basic variable by non basic
+            x[q] = theta
+            self.log("simplex: iteration {}, B({}) <-> {}, theta* = {}".format(iteration, p, q, theta))
+            iteration += 1
 
     def _phaseI(self):
         self.log("SIMPLEX: Phase I started")
