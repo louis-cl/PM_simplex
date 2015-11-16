@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # simplex.py 2015/11/16 Louis Clergue <louisclergue@gmail.com> - Kyezil
 # Programming assignment for the course of "Mathematical Programming" of BS in Mathematics at FME/UPC (Barcelona)
-import sys
-import numpy as np;
+import sys # get parameters
+import numpy as np; # linear algebra package
+from math import inf as INF; # infinity
 
 # That function generates chunks (arrays of lines) corresponding to matrices
 def generateChunks(fname, limit):
@@ -34,7 +35,7 @@ class Simplex:
         self.solved = False # mark as unsolved
         self.log("SIMPLEX: Have read c,A,b from %s" % filename)
 
-    # return leaving basic variable, or -1 if no negative reduced cost (optimal)
+    # return entring basic variable, or -1 if no negative reduced cost (optimal)
     def _blandRule(self, c, B, Binv) :
         l = np.dot(c[B], Binv) # cB*Binv = lambda from dual
         # generator to get reduced costs (computes on the fly)
@@ -47,7 +48,15 @@ class Simplex:
     # apply simplex algorithm given a basis, its inverse, and a basic feasible solution
     def _simplex(self, x, c, B, Binv):
         iteration = 1
-        q = self._blandRule(c, B, Binv) # get q, leaving BV
+        q = self._blandRule(c, B, Binv) # get q, entring BV
+        if q == -1 : return x, B # x is optimal with basis B
+        # compute directions d = -Binv*A[q], we can remove the -
+        u = np.dot(Binv, self.A[:,q])
+        # select B(p) leaving variable
+        theta = (INF,-1)
+        for i in range(len(u)):
+            if u[i] > 0 : theta = (min(theta[0], x[B[i]]/u[i]), i)
+        if theta[0] == INF: return INF # infinit direction, z = -infinite
 
     def _phaseI(self):
         self.log("SIMPLEX: Phase I started")
@@ -60,7 +69,7 @@ class Simplex:
         self.A = np.c_[self.A, np.eye(self.M)]
         B = np.arange(self.N, self.N+self.M) # create starting Base with artificial variables
         Binv = np.eye(len(B)) # inverse of identity is indentity
-        y = self.b # SBF is B
+        y = np.concatenate((np.zeros(self.N), self.b)) # SBF is B
         c = np.concatenate((np.zeros(self.N), np.ones(self.M)))
         self.log("Phase I: starting primal simplex with Bland's rule",1)
         self._simplex(y,c,B,Binv)
