@@ -39,18 +39,23 @@ class Simplex:
     def _blandRule(self, c, B, Binv) :
         l = np.dot(c[B], Binv) # cB*Binv = lambda from dual
         # generator to get reduced costs (computes on the fly)
-        r = ( (c[j] - np.inner(l,self.A[:,j]),j) for j in range(self.A.shape[1]) if j not in B)
+        r = ( (j, c[j] - np.inner(l,self.A[:,j])) for j in range(self.A.shape[1]) if j not in B)
         # return (rj, j) in increasing order, blandRule -> pick first < 0
         rj = next(r)
-        while rj != None and rj[0] >= 0 : rj = next(r,None) # return None at end
-        return -1 if rj == None else rj[1] # rj == None => rj >= 0 for all j => optimal
+        while rj != None and rj[1] >= 0 :
+            rj = next(r,None) # return None at end
+        return (-1,0) if rj == None else rj # rj == None => rj >= 0 for all j => optimal
 
     # apply simplex algorithm given a basis, its inverse, and a basic feasible solution
     def _simplex(self, x, c, B, Binv):
         iteration = 1
-        while iteration < 3 :
-            q = self._blandRule(c, B, Binv) # get q, entring BV
-            if q == -1 : return x, B # x is optimal with basis B
+        z = np.inner(c,x)
+        self.log("simplex it 0, starting with z = {}".format(z),2)
+        while iteration < 100 : # avoid infinite loop if bug
+            q , rq = self._blandRule(c, B, Binv) # get q, entring BV
+            if q == -1 :
+                self.log("simplex it {:2d}: Optimal solution found".format(iteration),2)
+                return True, x, B, np.inner(c,x) # x is optimal with basis B, recompute z
             # compute directions d = -Binv*A[q], we can remove the -
             u = np.dot(Binv, self.A[:,q])
             # select B(p) leaving variable
@@ -58,15 +63,28 @@ class Simplex:
             p = -1
             for i in range(len(u)):
                 if u[i] > 0 :
-                    theta = min(theta, x[B[i]]/u[i])
-                    p = i
-            if theta == INF: return INF # infinit direction, z = -infinite
-            # change of basis indexes
+                    theta_i = x[B[i]]/u[i]
+                    if theta_i < theta :
+                        theta = theta_i
+                        p = i
+            if theta == INF:
+                self.log("simplex it {:2d}: Infinite ray found, unbounded problem".format(iteration),2)
+                return False # infinite direction, z = -infinite
+
+            # compute z
+            z += theta*rq
+            self.log("simplex it {:2d}: B({:d}) = {:2d} <-> {:2d}, theta = {:.3f}, \
+z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
             # compute new feasible solution
             x[B] -= theta*u
-            B[p] = q  # replace basic variable by non basic
             x[q] = theta
-            self.log("simplex: iteration {}, B({}) <-> {}, theta* = {}".format(iteration, p, q, theta))
+            x[B[p]] = 0
+            B[p] = q  # replace basic variable by non basic
+            # compute new Binv
+            for i in range(len(u)):
+                if i != p:
+                    Binv[i,:] -= u[i]*Binv[p,:]/u[p]
+            Binv[p,:] /= u[p]
             iteration += 1
 
     def _phaseI(self):
@@ -83,7 +101,14 @@ class Simplex:
         y = np.concatenate((np.zeros(self.N), self.b)) # SBF is B
         c = np.concatenate((np.zeros(self.N), np.ones(self.M)))
         self.log("Phase I: starting primal simplex with Bland's rule",1)
-        self._simplex(y,c,B,Binv)
+        found, x, B, z = self._simplex(y,c,B,Binv)
+        if not found:
+            self.log("Phase I: unbounded problem",1)
+            return INF
+        if z > 0:
+            self.log("Phase I: optimal solution with z* = {:.2f} > 0".format(z),1)
+            return -1; # Infactible
+
 
     def solve(self):
         B = self._phaseI()
