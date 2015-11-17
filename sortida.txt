@@ -1,0 +1,175 @@
+------ Data input 1 ------
+SIMPLEX: Have read c,A,b from data/pb1.dat
+SIMPLEX: Phase I started
+	Phase I: make b >= 0
+	Phase I: add auxiliary variables
+	Phase I: starting primal simplex with Bland's rule
+		simplex it 0, starting with z = 2445.0
+		simplex it  1: B(2) = 22 <->  0, theta = 0.621, z = 2331.41
+		simplex it  2: B(8) = 28 <->  1, theta = 0.322, z = 2288.71
+		simplex it  3: B(6) = 26 <->  2, theta = 0.506, z = 2259.75
+		simplex it  4: B(5) = 25 <->  3, theta = 0.887, z = 1933.36
+		simplex it  5: B(5) =  3 <->  4, theta = 1.498, z = 1765.01
+		simplex it  6: B(9) = 29 <->  5, theta = 0.139, z = 1700.66
+		simplex it  7: B(1) = 21 <->  3, theta = 1.139, z = 1214.43
+		simplex it  8: B(2) =  0 <->  6, theta = 0.241, z = 1123.57
+		simplex it  9: B(5) =  4 <->  7, theta = 0.659, z = 857.18
+		simplex it 10: B(0) = 20 <->  8, theta = 0.667, z = 636.06
+		simplex it 11: B(7) = 27 <->  9, theta = 0.001, z = 635.41
+		simplex it 12: B(3) = 23 <->  0, theta = 0.475, z = 481.60
+		simplex it 13: B(2) =  6 <->  4, theta = 0.720, z = 432.72
+		simplex it 14: B(5) =  7 <-> 11, theta = 0.149, z = 368.24
+		simplex it 15: B(9) =  5 <->  6, theta = 1.189, z = 86.75
+		simplex it 16: B(4) = 24 <-> 10, theta = 0.787, z = -0.00
+		simplex it 17: Optimal solution found, z* = -0.00
+	Phase I: remove artificial variables
+Phase I: end
+SIMPLEX: Phase II started
+	Phase II: starting simplex primal with Bland's rule
+		simplex it 0, starting with z = 17.858850974601566
+		simplex it  1: B(6) =  2 <->  5, theta = 0.287, z = -65.51
+		simplex it  2: B(5) = 11 <-> 12, theta = 1.595, z = -329.92
+		simplex it  3: B(9) =  6 <-> 13, theta = 0.745, z = -465.06
+		simplex it  4: B(0) =  8 <->  7, theta = 0.962, z = -524.55
+		simplex it  5: B(2) =  4 <-> 16, theta = 214.425, z = -674.76
+		simplex it  6: B(9) = 13 <->  8, theta = 0.841, z = -707.47
+		simplex it  7: B(1) =  3 <-> 17, theta = 83.058, z = -753.43
+		simplex it  8: B(9) =  8 <-> 13, theta = 0.816, z = -766.80
+		simplex it  9: B(1) = 17 <-> 19, theta = 193.642, z = -781.43
+		simplex it 10: B(5) = 12 <-> 15, theta = 305.069, z = -791.80
+		simplex it 11: Optimal solution found, z* = -791.80
+	Phase II: end
+SIMPLEX: optimal solution found
+B = [ 7 19 16  0 10 15  5  9  1 13]
+Xb = [   3.   441.4   16.7    0.9    3.4  305.1    5.     1.4    0.8    1.3]
+Z* = -791.7975
+r = [ 119.2  133.9   34.5  135.8   39.6  168.6   12.2    0.7    0.1    0.1]
+SIMPLEX: end
+
+------ Data input 2 ------
+SIMPLEX: Have read c,A,b from data/pb2.dat
+SIMPLEX: Phase I started
+	Phase I: make b >= 0
+	Phase I: add auxiliary variables
+	Phase I: starting primal simplex with Bland's rule
+		simplex it 0, starting with z = 2454.0
+		simplex it  1: B(6) = 26 <->  0, theta = 0.427, z = 2406.64
+		simplex it  2: B(6) =  0 <->  1, theta = 0.344, z = 2218.65
+		simplex it  3: B(5) = 25 <->  3, theta = 0.062, z = 2165.77
+		simplex it  4: B(6) =  1 <->  2, theta = 1.074, z = 1974.31
+		simplex it  5: B(8) = 28 <->  4, theta = 0.602, z = 1638.57
+		simplex it  6: B(2) = 22 <->  0, theta = 1.739, z = 1576.75
+		simplex it  7: B(6) =  2 <->  5, theta = 0.933, z = 1471.60
+		simplex it  8: B(7) = 27 <->  6, theta = 0.164, z = 1411.23
+		simplex it  9: B(6) =  5 <->  1, theta = 0.732, z = 1384.62
+		simplex it 10: B(6) =  1 <->  7, theta = 1.778, z = 1281.55
+		simplex it 11: B(4) = 24 <->  8, theta = 2.706, z = 712.05
+		simplex it 12: B(0) = 20 <-> 10, theta = 1.576, z = 611.22
+		simplex it 13: B(6) =  7 <->  9, theta = 0.044, z = 599.06
+		simplex it 14: B(1) = 21 <-> 11, theta = 0.018, z = 587.34
+		simplex it 15: B(5) =  3 <->  1, theta = 1.646, z = 50.30
+		simplex it 16: B(3) = 23 <->  2, theta = 0.362, z = 46.14
+		simplex it 17: B(9) = 29 <->  7, theta = 1.640, z = -0.00
+		simplex it 18: Optimal solution found, z* = -0.00
+	Phase I: remove artificial variables
+Phase I: end
+SIMPLEX: Phase II started
+	Phase II: starting simplex primal with Bland's rule
+		simplex it 0, starting with z = -494.6646777159203
+		simplex it  1: B(5) =  1 <->  3, theta = 0.145, z = -571.47
+		simplex it  2: B(2) =  0 <-> 12, theta = 0.434, z = -609.94
+		simplex it  3: B(3) =  2 <->  1, theta = 0.329, z = -631.34
+		simplex it  4: B(1) = 11 <-> 13, theta = 0.167, z = -700.14
+		simplex it  5: B(8) =  4 <->  2, theta = 1.174, z = -749.88
+		simplex it  6: B(0) = 10 <->  5, theta = 0.509, z = -777.68
+		simplex it  7: B(0) =  5 <-> 11, theta = 0.410, z = -798.24
+		simplex it  8: B(0) = 11 <-> 17, theta = 38.267, z = -815.28
+		simplex it  9: B(9) =  7 <-> 16, theta = 24.712, z = -819.77
+		simplex it 10: B(0) = 17 <-> 18, theta = 217.049, z = -826.13
+		simplex it 11: B(1) = 13 <-> 15, theta = 119.482, z = -829.28
+		simplex it 12: B(4) =  8 <-> 19, theta = 49.874, z = -835.26
+		simplex it 13: B(0) = 18 <-> 13, theta = 1.787, z = -851.79
+		simplex it 14: Optimal solution found, z* = -851.79
+	Phase II: end
+SIMPLEX: optimal solution found
+B = [13 15 12  1 19  3  9  6  2 16]
+Xb = [   1.8   56.8    4.3    0.   232.4    3.3    2.2    0.2    4.2   41.3]
+Z* = -851.7891
+r = [  86.5   59.3  105.8   13.9   36.1   33.4   11.8    0.8    0.1    0. ]
+SIMPLEX: end
+
+------ Data input 3 ------
+SIMPLEX: Have read c,A,b from data/pb3.dat
+SIMPLEX: Phase I started
+	Phase I: make b >= 0
+	Phase I: add auxiliary variables
+	Phase I: starting primal simplex with Bland's rule
+		simplex it 0, starting with z = 1619.0
+		simplex it  1: B(9) = 29 <->  0, theta = 0.032, z = 1614.04
+		simplex it  2: B(7) = 27 <->  1, theta = 0.415, z = 1502.05
+		simplex it  3: B(9) =  0 <->  2, theta = 0.006, z = 1501.75
+		simplex it  4: B(9) =  2 <->  3, theta = 0.051, z = 1497.94
+		simplex it  5: B(4) = 24 <-> 14, theta = 229.297, z = 1268.64
+		simplex it  6: B(8) = 28 <-> 18, theta = 55.190, z = 1213.45
+		simplex it  7: Optimal solution found, z* = 1213.45
+	Phase I: optimal solution with z* = 1213.45 > 0
+SIMPLEX: infactible problem
+SIMPLEX: end
+
+------ Data input 4 ------
+SIMPLEX: Have read c,A,b from data/pb4.dat
+SIMPLEX: Phase I started
+	Phase I: make b >= 0
+	Phase I: add auxiliary variables
+	Phase I: starting primal simplex with Bland's rule
+		simplex it 0, starting with z = 7348.0
+		simplex it  1: B(7) = 31 <->  0, theta = 8.274, z = 3343.40
+		simplex it  2: B(6) = 30 <->  1, theta = 1.610, z = 2547.76
+		simplex it  3: B(0) = 24 <->  2, theta = 0.798, z = 2206.17
+		simplex it  4: B(2) = 26 <->  3, theta = 0.645, z = 1840.72
+		simplex it  5: B(4) = 28 <->  5, theta = 2.362, z = 1138.84
+		simplex it  6: B(1) = 25 <->  6, theta = 1.290, z = 674.75
+		simplex it  7: B(8) = 32 <->  4, theta = 0.832, z = 424.08
+		simplex it  8: B(8) =  4 <->  9, theta = 2.629, z = 179.71
+		simplex it  9: B(5) = 29 <->  7, theta = 0.161, z = 138.47
+		simplex it 10: B(6) =  1 <->  4, theta = 0.400, z = 133.60
+		simplex it 11: B(9) = 33 <->  8, theta = 1.775, z = 79.41
+		simplex it 12: B(6) =  4 <-> 10, theta = 0.351, z = 79.10
+		simplex it 13: B(4) =  5 <-> 11, theta = 0.456, z = 48.24
+		simplex it 14: B(9) =  8 <->  1, theta = 1.602, z = 22.08
+		simplex it 15: B(3) = 27 <->  4, theta = 0.470, z = -0.00
+		simplex it 16: Optimal solution found, z* = -0.00
+	Phase I: remove artificial variables
+Phase I: end
+SIMPLEX: Phase II started
+	Phase II: starting simplex primal with Bland's rule
+		simplex it 0, starting with z = -624.4479021217758
+		simplex it  1: B(5) =  7 <->  5, theta = 1.105, z = -682.52
+		simplex it  2: B(6) = 10 <->  8, theta = 0.074, z = -683.21
+		simplex it  3: B(6) =  8 <-> 13, theta = 0.123, z = -683.83
+		simplex it  4: B(6) = 13 <-> 14, theta = 9.700, z = -688.70
+		simplex it  5: B(9) =  1 <->  7, theta = 0.216, z = -713.65
+		simplex it  6: B(9) =  7 <-> 12, theta = 0.597, z = -716.16
+		simplex it  7: B(3) =  4 <-> 15, theta = 61.173, z = -762.08
+		simplex it  8: B(9) = 12 <->  7, theta = 0.240, z = -775.66
+		simplex it  9: B(5) =  5 <-> 13, theta = 0.009, z = -775.88
+		simplex it 10: B(2) =  3 <-> 12, theta = 1.236, z = -780.76
+		simplex it 11: B(9) =  7 <-> 16, theta = 253.235, z = -897.34
+		simplex it 12: B(8) =  9 <->  3, theta = 0.160, z = -967.46
+		simplex it 13: B(4) = 11 <->  5, theta = 0.047, z = -995.83
+		simplex it 14: B(4) =  5 <->  7, theta = 0.019, z = -997.38
+		simplex it 15: B(5) = 13 <-> 17, theta = 168.160, z = -1022.29
+		simplex it 16: B(8) =  3 <-> 20, theta = 115.237, z = -1128.72
+		simplex it 17: B(0) =  2 <->  1, theta = 5.726, z = -1144.53
+		simplex it 18: B(0) =  1 <-> 19, theta = 1294.413, z = -1414.30
+		simplex it 19: B(4) =  7 <-> 21, theta = 91.412, z = -1545.09
+		simplex it 20: B(0) = 19 <-> 18, theta = 441.997, z = -2185.25
+		simplex it 21: B(1) =  6 <->  7, theta = 4.981, z = -2197.01
+		simplex it 22: B(1) =  7 <-> 13, theta = 6.140, z = -2231.49
+		simplex it 23: B(1) = 13 <-> 23, theta = 1171.206, z = -6979.51
+		simplex it 24: B(2) = 12 <->  3, theta = 7.345, z = -7430.07
+		simplex it 25: B(2) =  3 <-> 22, theta = 5964.000, z = -64896.00
+		simplex it 26: Infinite ray found, unbounded problem
+SIMPLEX: unbounded problem z* = -inf
+SIMPLEX: end
+
