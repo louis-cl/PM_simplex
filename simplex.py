@@ -99,11 +99,26 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
                 self.A[i,:] *= -1
                 self.b[i] *= -1
         self.log("Phase I: add auxiliary variables",1)
-        self.A = np.c_[self.A, np.eye(self.M)]
-        B = np.arange(self.N, self.N+self.M) # create starting Base with artificial variables
-        Binv = np.eye(len(B)) # inverse of identity is indentity
-        y = np.concatenate((np.zeros(self.N), self.b)) # SBF is B
-        c = np.concatenate((np.zeros(self.N), np.ones(self.M)))
+        B = -np.ones(self.M, dtype=np.int) # init basis with -1 (undefined)
+        # find columns with e_i
+        for j in range(self.N) :
+            i = np.argmax(self.A[:,j])
+            # norm1 column j == 1 and A[i,j] = 1 => column Aj is e_i
+            if np.linalg.norm(self.A[:,j], ord=1) == 1 and self.A[i,j] == 1 and B[i] == -1 :
+                B[i] = j
+        # complete missing e_j
+        for j in range(self.M) :
+            if B[j] == -1 : # add e_j at end
+                e_j = np.zeros(self.M)
+                e_j[j] = 1
+                self.A = np.c_[self.A, e_j]
+                B[j] = self.A.shape[1]-1
+        Binv = np.eye(self.M) # inverse of identity is indentity
+        # create y and c
+        y = np.zeros(self.A.shape[1]) # trivial SBF
+        c = np.zeros(self.A.shape[1]) # 1 for B
+        y[B] = self.b
+        c[B] = 1
         self.log("Phase I: starting primal simplex with Bland's rule",1)
         found, x, B, z = self._simplex(y,c,B,Binv)
         if not found:
@@ -115,8 +130,8 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
         self.log("Phase I: remove artificial variables",1)
         # remove columns of artificial variables
         if np.linalg.norm(x[self.N:]) != 0 : self.log("ERROR: artificial variables should be 0")
-        self.A = self.A[:,:self.N] # change A
-        x = x[:self.N] # change X
+        self.A = self.A[:,:self.N] # remove added artificial variables
+        x = x[:self.N]
         self.log("Phase I: end")
         return True, x, B, Binv
 
