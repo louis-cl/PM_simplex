@@ -157,7 +157,11 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
         self.log("B = {}".format(B))
         self.log("Xb = {}".format(x[B]))
         self.log("Z* = {:.4f}".format(z))
-#        self.log("r = {}".format(r))
+        # compute reduced costs
+        mask = np.ones(len(x), dtype=bool)
+        mask[B] = 0
+        r = self.c[mask] - np.dot(np.dot(self.c[B],Binv), self.A[:,mask])
+        self.log("r = {}".format(r))
         self.log("SIMPLEX: end")
 
     def display(self):
