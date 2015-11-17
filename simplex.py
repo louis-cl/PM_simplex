@@ -113,23 +113,6 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
             self.log("Phase I: optimal solution with z* = {:.2f} > 0".format(z),1)
             return False, -1 # Infactible
         self.log("Phase I: remove artificial variables",1)
-
-        for l in range(len(B)): # for each basic variables
-            if B[l] >= self.N : # if is artificial
-                # find non artificial variable to enter
-                var = iter(range(self.N)) # generate index
-                j = next(var)
-                while j != None and np.inner(Binv[l,:], self.A[:,j]) == 0 :
-                    j = next(var,None) # j exists if A has maximal rank
-                if j == None: # => row l of A is l.d with others
-                    self.A = np.delete(self.A, (l), axis=0)
-                    self.b = np.delete(self.b, (l), axis=0)
-                    self.log("removed row {} of A, as it isn't l.i".format(l),2)
-                    continue
-                # will never be here ?
-                self.log("change B({}) = {:2d} <-> {:2d}".format(B[l],l,j),2)
-                B[l] = j # change l artificial for j non artificial
-                self._recomputeBinv(l, np.dot(Binv, self.A[:,j]), Binv) # update Binv
         # remove columns of artificial variables
         if np.linalg.norm(x[self.N:]) != 0 : self.log("ERROR: artificial variables should be 0")
         self.A = self.A[:,:self.N] # change A
