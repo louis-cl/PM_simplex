@@ -6,21 +6,21 @@ SIMPLEX: Phase I started
 	Phase I: starting primal simplex with Bland's rule
 		simplex it 0, starting with z = 2445.0
 		simplex it  1: B(2) = 22 <->  0, theta = 0.621, z = 2331.41
-		simplex it  2: B(8) = 28 <->  1, theta = 0.322, z = 2288.71
-		simplex it  3: B(6) = 26 <->  2, theta = 0.506, z = 2259.75
-		simplex it  4: B(5) = 25 <->  3, theta = 0.887, z = 1933.36
+		simplex it  2: B(8) = 25 <->  1, theta = 0.322, z = 2288.71
+		simplex it  3: B(6) = 16 <->  2, theta = 0.506, z = 2259.75
+		simplex it  4: B(5) = 24 <->  3, theta = 0.887, z = 1933.36
 		simplex it  5: B(5) =  3 <->  4, theta = 1.498, z = 1765.01
-		simplex it  6: B(9) = 29 <->  5, theta = 0.139, z = 1700.66
+		simplex it  6: B(9) = 26 <->  5, theta = 0.139, z = 1700.66
 		simplex it  7: B(1) = 21 <->  3, theta = 1.139, z = 1214.43
 		simplex it  8: B(2) =  0 <->  6, theta = 0.241, z = 1123.57
 		simplex it  9: B(5) =  4 <->  7, theta = 0.659, z = 857.18
 		simplex it 10: B(0) = 20 <->  8, theta = 0.667, z = 636.06
-		simplex it 11: B(7) = 27 <->  9, theta = 0.001, z = 635.41
+		simplex it 11: B(7) = 17 <->  9, theta = 0.001, z = 635.41
 		simplex it 12: B(3) = 23 <->  0, theta = 0.475, z = 481.60
 		simplex it 13: B(2) =  6 <->  4, theta = 0.720, z = 432.72
 		simplex it 14: B(5) =  7 <-> 11, theta = 0.149, z = 368.24
 		simplex it 15: B(9) =  5 <->  6, theta = 1.189, z = 86.75
-		simplex it 16: B(4) = 24 <-> 10, theta = 0.787, z = -0.00
+		simplex it 16: B(4) = 14 <-> 10, theta = 0.787, z = -0.00
 		simplex it 17: Optimal solution found, z* = -0.00
 	Phase I: remove artificial variables
 Phase I: end
@@ -53,23 +53,23 @@ SIMPLEX: Phase I started
 	Phase I: add auxiliary variables
 	Phase I: starting primal simplex with Bland's rule
 		simplex it 0, starting with z = 2454.0
-		simplex it  1: B(6) = 26 <->  0, theta = 0.427, z = 2406.64
+		simplex it  1: B(6) = 16 <->  0, theta = 0.427, z = 2406.64
 		simplex it  2: B(6) =  0 <->  1, theta = 0.344, z = 2218.65
-		simplex it  3: B(5) = 25 <->  3, theta = 0.062, z = 2165.77
+		simplex it  3: B(5) = 24 <->  3, theta = 0.062, z = 2165.77
 		simplex it  4: B(6) =  1 <->  2, theta = 1.074, z = 1974.31
-		simplex it  5: B(8) = 28 <->  4, theta = 0.602, z = 1638.57
+		simplex it  5: B(8) = 25 <->  4, theta = 0.602, z = 1638.57
 		simplex it  6: B(2) = 22 <->  0, theta = 1.739, z = 1576.75
 		simplex it  7: B(6) =  2 <->  5, theta = 0.933, z = 1471.60
-		simplex it  8: B(7) = 27 <->  6, theta = 0.164, z = 1411.23
+		simplex it  8: B(7) = 17 <->  6, theta = 0.164, z = 1411.23
 		simplex it  9: B(6) =  5 <->  1, theta = 0.732, z = 1384.62
 		simplex it 10: B(6) =  1 <->  7, theta = 1.778, z = 1281.55
-		simplex it 11: B(4) = 24 <->  8, theta = 2.706, z = 712.05
+		simplex it 11: B(4) = 14 <->  8, theta = 2.706, z = 712.05
 		simplex it 12: B(0) = 20 <-> 10, theta = 1.576, z = 611.22
 		simplex it 13: B(6) =  7 <->  9, theta = 0.044, z = 599.06
 		simplex it 14: B(1) = 21 <-> 11, theta = 0.018, z = 587.34
 		simplex it 15: B(5) =  3 <->  1, theta = 1.646, z = 50.30
 		simplex it 16: B(3) = 23 <->  2, theta = 0.362, z = 46.14
-		simplex it 17: B(9) = 29 <->  7, theta = 1.640, z = -0.00
+		simplex it 17: B(9) = 19 <->  7, theta = 1.640, z = -0.00
 		simplex it 18: Optimal solution found, z* = -0.00
 	Phase I: remove artificial variables
 Phase I: end
@@ -105,15 +105,13 @@ SIMPLEX: Phase I started
 	Phase I: add auxiliary variables
 	Phase I: starting primal simplex with Bland's rule
 		simplex it 0, starting with z = 1619.0
-		simplex it  1: B(9) = 29 <->  0, theta = 0.032, z = 1614.04
-		simplex it  2: B(7) = 27 <->  1, theta = 0.415, z = 1502.05
+		simplex it  1: B(9) = 19 <->  0, theta = 0.032, z = 1614.04
+		simplex it  2: B(7) = 17 <->  1, theta = 0.415, z = 1502.05
 		simplex it  3: B(9) =  0 <->  2, theta = 0.006, z = 1501.75
 		simplex it  4: B(9) =  2 <->  3, theta = 0.051, z = 1497.94
-		simplex it  5: B(4) = 24 <-> 14, theta = 229.297, z = 1268.64
-		simplex it  6: B(8) = 28 <-> 18, theta = 55.190, z = 1213.45
-		simplex it  7: Optimal solution found, z* = 1213.45
-	Phase I: optimal solution with z* = 1213.45 > 0
-SIMPLEX: infactible problem
+		simplex it  5: Optimal solution found, z* = 1497.94
+	Phase I: optimal solution with z* = 1497.94 > 0
+SIMPLEX: infeasible problem
 SIMPLEX: end
 
 ------ Data input 4 ------
