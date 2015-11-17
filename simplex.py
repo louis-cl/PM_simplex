@@ -61,7 +61,7 @@ class Simplex:
         while iteration <= self.max_it : # avoid infinite loop if bug
             q , rq = self._blandRule(c, B, Binv) # get q, entring BV
             if q == -1 :
-                self.log("simplex it {:2d}: Optimal solution found".format(iteration),2)
+                self.log("simplex it {:2d}: Optimal solution found, z* = {:.2f}".format(iteration, z),2)
                 return True, x, B, np.inner(c,x) # x is optimal with basis B, recompute z
             # compute directions d = -Binv*A[q], we can remove the -
             u = np.dot(Binv, self.A[:,q])
@@ -134,6 +134,7 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
         if np.linalg.norm(x[self.N:]) != 0 : self.log("ERROR: artificial variables should be 0")
         self.A = self.A[:,:self.N] # change A
         x = x[:self.N] # change X
+        self.log("Phase I: end")
         return True, x, B, Binv
 
     def solve(self):
@@ -144,6 +145,20 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
             else: self.log("SIMPLEX: infactible problem")
             return -1
         x, B, Binv = ret[1:] # unpack result
+        self.log("SIMPLEX: Phase II started")
+        self.log("Phase II: starting simplex primal with Bland's rule",1)
+        found, x, B, z, = self._simplex(x, self.c, B, Binv)
+        if not found:
+            self.log("SIMPLEX: unbounded problem z* = -inf")
+            return x, -INF
+        self.log("Phase II: end",1)
+        self.log("SIMPLEX: optimal solution found")
+        np.set_printoptions(precision=1, suppress=True)
+        self.log("B = {}".format(B))
+        self.log("Xb = {}".format(x[B]))
+        self.log("Z* = {:.4f}".format(z))
+#        self.log("r = {}".format(r))
+        self.log("SIMPLEX: end")
 
     def display(self):
         print("VECTOR C:")
