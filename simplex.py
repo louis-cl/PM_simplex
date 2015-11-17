@@ -76,7 +76,7 @@ class Simplex:
                         p = i
             if theta == INF:
                 self.log("simplex it {:2d}: Infinite ray found, unbounded problem".format(iteration),2)
-                return False # infinite direction, z = -infinite
+                return False, x, B, INF # infinite direction, z = -infinite
 
             # compute new z
             z += theta*rq
@@ -142,27 +142,28 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
         if not ret[0]:
             if ret[1] == INF:
                 self.log("SIMPLEX: unbounded problem, z* = -inf")
-            else: self.log("SIMPLEX: infactible problem")
-            return -1
-        x, B, Binv = ret[1:] # unpack result
-        self.log("SIMPLEX: Phase II started")
-        self.log("Phase II: starting simplex primal with Bland's rule",1)
-        found, x, B, z, = self._simplex(x, self.c, B, Binv)
-        if not found:
-            self.log("SIMPLEX: unbounded problem z* = -inf")
-            return x, -INF
-        self.log("Phase II: end",1)
-        self.log("SIMPLEX: optimal solution found")
-        np.set_printoptions(precision=1, suppress=True)
-        self.log("B = {}".format(B))
-        self.log("Xb = {}".format(x[B]))
-        self.log("Z* = {:.4f}".format(z))
-        # compute reduced costs
-        mask = np.ones(len(x), dtype=bool)
-        mask[B] = 0
-        r = self.c[mask] - np.dot(np.dot(self.c[B],Binv), self.A[:,mask])
-        self.log("r = {}".format(r))
-        self.log("SIMPLEX: end")
+            else:
+                self.log("SIMPLEX: infactible problem")
+        else:
+            x, B, Binv = ret[1:] # unpack result
+            self.log("SIMPLEX: Phase II started")
+            self.log("Phase II: starting simplex primal with Bland's rule",1)
+            found, x, B, z = self._simplex(x, self.c, B, Binv)
+            if not found:
+                self.log("SIMPLEX: unbounded problem z* = -inf")
+            else:
+                self.log("Phase II: end",1)
+                self.log("SIMPLEX: optimal solution found")
+                np.set_printoptions(precision=1, suppress=True)
+                self.log("B = {}".format(B))
+                self.log("Xb = {}".format(x[B]))
+                self.log("Z* = {:.4f}".format(z))
+                # compute reduced costs
+                mask = np.ones(len(x), dtype=bool)
+                mask[B] = 0
+                r = self.c[mask] - np.dot(np.dot(self.c[B],Binv), self.A[:,mask])
+                self.log("r = {}".format(r))
+        self.log("SIMPLEX: end\n")
 
     def display(self):
         print("VECTOR C:")
