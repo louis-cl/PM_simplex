@@ -47,6 +47,12 @@ class Simplex:
             rj = next(r,None) # return None at end
         return (-1,0) if rj == None else rj # rj == None => rj >= 0 for all j => optimal
 
+    # change column col of Basis B with u, compute new inverse from previous one
+    def _recomputeBinv(self, col, u, Binv) :
+        for i in range(len(u)):
+            if i != col : Binv[i,:] -= u[i]*Binv[col,:]/u[col]
+        Binv[col,:] /= u[col]
+
     # apply simplex algorithm given a basis, its inverse, and a basic feasible solution
     def _simplex(self, x, c, B, Binv):
         iteration = 1
@@ -82,10 +88,7 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
             x[B[p]] = 0 # put a real 0, aprox issue
             B[p] = q  # replace basic variable by non basic
             # compute new Binv
-            for i in range(len(u)):
-                if i != p:
-                    Binv[i,:] -= u[i]*Binv[p,:]/u[p]
-            Binv[p,:] /= u[p] # devide after to avoid loss of precision
+            self._recomputeBinv(p, u, Binv)
             iteration += 1
 
     def _phaseI(self):
@@ -105,21 +108,42 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
         found, x, B, z = self._simplex(y,c,B,Binv)
         if not found:
             self.log("Phase I: unbounded problem",1)
-            return INF
+            return False, INF
         if z > 0:
             self.log("Phase I: optimal solution with z* = {:.2f} > 0".format(z),1)
-            return False, x, B # Infactible
-        self.log("Phase I: remove auxiliary variables")
-# TODO remove auxiliary variables
-        return True, x, B
+            return False, -1 # Infactible
+        self.log("Phase I: remove artificial variables",1)
+
+        for l in range(len(B)): # for each basic variables
+            if B[l] >= self.N : # if is artificial
+                # find non artificial variable to enter
+                var = iter(range(self.N)) # generate index
+                j = next(var)
+                while j != None and np.inner(Binv[l,:], self.A[:,j]) == 0 :
+                    j = next(var,None) # j exists if A has maximal rank
+                if j == None: # => row l of A is l.d with others
+                    self.A = np.delete(self.A, (l), axis=0)
+                    self.b = np.delete(self.b, (l), axis=0)
+                    self.log("removed row {} of A, as it isn't l.i".format(l),2)
+                    continue
+                # will never be here ?
+                self.log("change B({}) = {:2d} <-> {:2d}".format(B[l],l,j),2)
+                B[l] = j # change l artificial for j non artificial
+                self._recomputeBinv(l, np.dot(Binv, self.A[:,j]), Binv) # update Binv
+        # remove columns of artificial variables
+        if np.linalg.norm(x[self.N:]) != 0 : self.log("ERROR: artificial variables should be 0")
+        self.A = self.A[:,:self.N] # change A
+        x = x[:self.N] # change X
+        return True, x, B, Binv
 
     def solve(self):
-        solvable, x, B = self._phaseI()
-        if solvable == INF:
-            self.log("SIMPLEX: unbounded problem, z* = -inf")
+        ret = self._phaseI()
+        if not ret[0]:
+            if ret[1] == INF:
+                self.log("SIMPLEX: unbounded problem, z* = -inf")
+            else: self.log("SIMPLEX: infactible problem")
             return -1
-        if not solvable:
-            self.log("SIMPLEX: infactible problem")
+        x, B, Binv = ret[1:] # unpack result
 
     def display(self):
         print("VECTOR C:")
