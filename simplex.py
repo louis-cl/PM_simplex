@@ -79,13 +79,13 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
             # compute new feasible solution
             x[B] -= theta*u
             x[q] = theta
-            x[B[p]] = 0
+            x[B[p]] = 0 # put a real 0, aprox issue
             B[p] = q  # replace basic variable by non basic
             # compute new Binv
             for i in range(len(u)):
                 if i != p:
                     Binv[i,:] -= u[i]*Binv[p,:]/u[p]
-            Binv[p,:] /= u[p]
+            Binv[p,:] /= u[p] # devide after to avoid loss of precision
             iteration += 1
 
     def _phaseI(self):
@@ -109,6 +109,8 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
         if z > 0:
             self.log("Phase I: optimal solution with z* = {:.2f} > 0".format(z),1)
             return False, x, B # Infactible
+        self.log("Phase I: remove auxiliary variables")
+# TODO remove auxiliary variables
         return True, x, B
 
     def solve(self):
