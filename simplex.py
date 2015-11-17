@@ -33,6 +33,7 @@ class Simplex:
         self.verbose = verbose
         self.M, self.N = self.A.shape # store # or original variables
         self.solved = False # mark as unsolved
+        self.max_it = 200
         self.log("SIMPLEX: Have read c,A,b from %s" % filename)
 
     # return entring basic variable, or -1 if no negative reduced cost (optimal)
@@ -51,7 +52,7 @@ class Simplex:
         iteration = 1
         z = np.inner(c,x)
         self.log("simplex it 0, starting with z = {}".format(z),2)
-        while iteration < 100 : # avoid infinite loop if bug
+        while iteration <= self.max_it : # avoid infinite loop if bug
             q , rq = self._blandRule(c, B, Binv) # get q, entring BV
             if q == -1 :
                 self.log("simplex it {:2d}: Optimal solution found".format(iteration),2)
@@ -71,7 +72,7 @@ class Simplex:
                 self.log("simplex it {:2d}: Infinite ray found, unbounded problem".format(iteration),2)
                 return False # infinite direction, z = -infinite
 
-            # compute z
+            # compute new z
             z += theta*rq
             self.log("simplex it {:2d}: B({:d}) = {:2d} <-> {:2d}, theta = {:.3f}, \
 z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
