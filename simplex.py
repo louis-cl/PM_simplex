@@ -107,11 +107,16 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
             return INF
         if z > 0:
             self.log("Phase I: optimal solution with z* = {:.2f} > 0".format(z),1)
-            return -1; # Infactible
-
+            return False, x, B # Infactible
+        return True, x, B
 
     def solve(self):
-        B = self._phaseI()
+        solvable, x, B = self._phaseI()
+        if solvable == INF:
+            self.log("SIMPLEX: unbounded problem, z* = -inf")
+            return -1
+        if not solvable:
+            self.log("SIMPLEX: infactible problem")
 
     def display(self):
         print("VECTOR C:")
