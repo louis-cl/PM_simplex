@@ -26,7 +26,7 @@ class Simplex:
     #   min c'x
     #   s.t | Ax = b
     #       | x >= 0
-    
+
     # Get cost vector (c), constrictions coefs (A), independent term (b)
     def __init__(self, filename, verbose=False):
         self.verbose = verbose
@@ -43,7 +43,8 @@ class Simplex:
     def _blandRule(self, c, B, Binv) :
         l = np.dot(c[B], Binv) # cB*Binv = lambda from dual
         # generator to get reduced costs (computes on the fly)
-        r = ( (j, c[j] - np.inner(l,self.A[:,j])) for j in range(self.A.shape[1]) if j not in B)
+        # if in phaseI self.N <= self.A.shape[1] => never choose artificial variables
+        r = ( (j, c[j] - np.inner(l,self.A[:,j])) for j in range(self.N) if j not in B)
         # return (rj, j) in increasing order
         rj = next(r) # blandRule -> pick first < 0
         while rj != None and rj[1] >= 0 :
