@@ -61,7 +61,7 @@ class Simplex:
     def _simplex(self, x, c, B, Binv):
         iteration = 1
         z = np.inner(c,x) # first computation of z
-        self.log("simplex it 0, starting with z = {}".format(z),2)
+        self.log("starting with z = {}".format(z),2)
         while iteration <= self.max_it : # avoid infinite loop
             q , rq = self._blandRule(c, B, Binv) # get q, entring basic variable
             if q == -1 : # => optimal
@@ -122,7 +122,7 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
         y = np.zeros(self.A.shape[1])
         c = np.zeros(self.A.shape[1])
         y[B] = self.b # trivial BFS
-        c[B] = 1 # cost in 1 for y and 0 for x
+        c[self.N:] = 1 # cost in 1 for artificial variables and 0 for x
         self.log("Phase I: starting primal simplex with Bland's rule",1)
         found, x, B, z = self._simplex(y,c,B,Binv)
         if not found:
@@ -132,6 +132,29 @@ z = {:.2f}".format(iteration, p, B[p], q, theta,z),2)
             self.log("Phase I: optimal solution with z* = {:.2f} > 0".format(z),1)
             return False, -1 # => infeasible
         self.log("Phase I: remove artificial variables",1)
+        up = len(B) # upper limit
+        l = 0 # starting point
+        while l < up :
+            if B[l] >= self.N: # artificial variable
+                # find non artificial variable to enter
+                var = iter(range(self.N)) # generates indexes
+                j = next(var)
+                while j != None and np.inner(Binv[l,:], self.A[:,j]) == 0 :
+                    j = next(var, None)
+                if j == None : # => row l of A is l.d with others row
+                    self.A = np.delete(self.A, (l), axis=0) # remove row of A
+                    self.b = np.delete(self.b, (l))
+                    B =  np.delete(B, (l))
+                    Binv = np.delete(Binv, (l), axis=0)
+                    Binv = np.delete(Binv, (l), axis=1)
+                    self.log("removed redundant row of A", 2)
+                    up -= 1
+                    continue # do not increment l
+                # introduce non-artificial variables
+                self.log("change B({}) = {:2d} <-> {:2d}".format(B[l],l,j),2)
+                B[l] = j # change l artificial for j non artificial
+                self._recomputeBinv(l, np.dot(Binv, self.A[:,j]), Binv) # update Binv
+            l += 1
         # remove columns of artificial variables
         if np.linalg.norm(x[self.N:]) != 0 : self.log("ERROR: artificial variables should be 0")
         self.A = self.A[:,:self.N] # remove added artificial variables
